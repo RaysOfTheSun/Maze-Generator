@@ -37,11 +37,14 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
+            # clock.tick(60)
+
+            print("CURRENT INDEX: {}".format(self.grid.index(self.current)))
             self.current.highlight(self.surface)
+            
             chosen_index = self.current.get_neighbor(self.grid)
             if chosen_index is not None:
                 self.grid[chosen_index].visited = True
                 self.current = self.grid[chosen_index]
 
-            clock.tick(5)
 
