@@ -1,5 +1,5 @@
 from MazeObjects.Cell import Cell
-import pygame
+import pygame; import random
 
 
 class Maze:
@@ -12,26 +12,26 @@ class Maze:
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))
 
-    def __create(self):
+    def create(self):
         for row in range(self.rows):
             for column in range(self.columns):
                 grid_cell = Cell(row, column, self.cell_width)
                 self.grid.append(grid_cell)
-                grid_cell.draw(self.surface)
+
+        self.grid[0].visited = True
+        self.grid[0].walls[1] = False
 
     def build(self):
-        self.__create()
         while True:
             user_action = pygame.event.poll()
             if user_action.type == pygame.QUIT:
                 pygame.quit()
                 break
 
-            for grid_cell in self.grid:
-                grid_cell.draw(self.surface)
+            if self.grid:  # if there a cells in the grid, display them
+                for grid_cell in self.grid:
+                    grid_cell.draw(self.surface)
+                    self.grid.pop()
 
-            print("cell object count: {}".format(len(self.grid)))
-            pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
-
-    
+                pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 

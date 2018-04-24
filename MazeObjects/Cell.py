@@ -27,13 +27,33 @@ class Cell:
         y = self.__y_coordinate * self.__width
 
         # draw upper side of the cell
-        pygame.draw.line(surface, self.__palette.white, (x, y), ((x + self.__width), y))
+        if self.walls[0]:
+            pygame.draw.line(surface, self.__palette.white, (x, y), ((x + self.__width), y))
         # draw the bottom side of the cell
-        pygame.draw.line(surface, self.__palette.white, (x, y + self.__width),
-                         ((x + self.__width), y + self.__width))
+        if self.walls[1]:
+            pygame.draw.line(surface, self.__palette.white, (x, y + self.__width),
+                             ((x + self.__width), y + self.__width))
         # draw the left side of the cell
-        pygame.draw.line(surface, self.__palette.white, (x, y), (x, (y + self.__width)))
+        if self.walls[2]:
+            pygame.draw.line(surface, self.__palette.white, (x, y), (x, (y + self.__width)))
         # draw the right side of the cell
-        pygame.draw.line(surface, self.__palette.white, ((x + self.__width), y),
-                         ((x + self.__width), (y + self.__width)))
+        if self.walls[3]:
+            pygame.draw.line(surface, self.__palette.white, ((x + self.__width), y),
+                             ((x + self.__width), (y + self.__width)))
+
+        rectangle = pygame.Surface((self.__width, self.__width))
+        rectangle.fill(self.__palette.purple)
+        rectangle.set_alpha(50)
+        # surface.blit(rectangle, (self.__x_coordinate, self.__y_coordinate))
+        surface.blit(rectangle, (0, 0))
+
+    def get_neighbors(self):
+        neighbors = []
+
+
+
+
+
+
+
 
