@@ -46,8 +46,9 @@ class Cell:
             rectangle = pygame.Surface((self.__width, self.__width))
             rectangle.fill(self.__palette.purple)
             rectangle.set_alpha(50)
-            # surface.blit(rectangle, (0, 0))
-            surface.blit(rectangle, (self.__x_coordinate, self.__y_coordinate))
+            #surface.blit(rectangle, (0, 0))
+            surface.blit(rectangle, (x, y))
+            print("x: {}; y: {}".format(self.__x_coordinate, self.__y_coordinate))
 
     @staticmethod
     def get_cell(x_coordinate: int, y_coordinate: int, column_count: int=10)->int:
@@ -58,26 +59,23 @@ class Cell:
         :param (int) column_count: the number of columns that the grid has
         :return: (int) the index of the specific cell in the grid
         """
+        if (x_coordinate < 0) or (y_coordinate < 0) or (x_coordinate > column_count - 1) \
+                or (y_coordinate > column_count - 1):
+            return -1
+
         return x_coordinate + y_coordinate * column_count
 
-    def get_neighbors(self, cells):
-        indexes = [self.get_cell(self.__x_coordinate, self.__y_coordinate + 1),
-                   self.get_cell(self.__x_coordinate, self.__y_coordinate - 1),
-                   self.get_cell(self.__x_coordinate - 1, self.__y_coordinate),
-                   self.get_cell(self.__x_coordinate + 1, self.__y_coordinate)]
+    def get_neighbor(self, cells):
+        indexes = [self.get_cell(self.__x_coordinate, self.__y_coordinate - 1),  # top side
+                   self.get_cell(self.__x_coordinate, self.__y_coordinate + 1),  # bottom side
+                   self.get_cell(self.__x_coordinate - 1, self.__y_coordinate),  # left side
+                   self.get_cell(self.__x_coordinate + 1, self.__y_coordinate)]  # right side
 
         neighbors = []
 
         for index in indexes:
-            if not cells[index].visited:
+            if (index != -1) and (not cells[index].visited):
                 neighbors.append(cells[index])
 
-        return random.choice(neighbors)
-
-
-
-
-
-
-
-
+        if neighbors:
+            return random.choice(neighbors)
