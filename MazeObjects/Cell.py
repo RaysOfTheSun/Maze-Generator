@@ -11,8 +11,8 @@ class Cell:
         :param y_coordinate:
         :param width: How wide and tall the cell would be.
         """
-        self.__x_coordinate = x_coordinate
-        self.__y_coordinate = y_coordinate
+        self.x_coordinate = x_coordinate
+        self.y_coordinate = y_coordinate
         self.__width = width
         self.visited = False
         self.walls = [True, True, True, True]
@@ -24,8 +24,8 @@ class Cell:
         Each cell is composed of four sides. Each side is an individual line.
         :return: nothing
         """
-        x = self.__x_coordinate * self.__width
-        y = self.__y_coordinate * self.__width
+        x = self.x_coordinate * self.__width
+        y = self.y_coordinate * self.__width
 
         # draw upper side of the cell
         if self.walls[0]:
@@ -46,14 +46,20 @@ class Cell:
             rectangle = pygame.Surface((self.__width, self.__width))
             rectangle.fill(self.__palette.purple)
             rectangle.set_alpha(50)
-            #surface.blit(rectangle, (0, 0))
             surface.blit(rectangle, (x, y))
-            print("x: {}; y: {}".format(self.__x_coordinate, self.__y_coordinate))
+
+    def highlight(self, surface):
+        x = self.x_coordinate * self.__width
+        y = self.y_coordinate * self.__width
+        rectangle = pygame.Surface((self.__width, self.__width))
+        rectangle.fill(self.__palette.green)
+        rectangle.set_alpha(255)
+        surface.blit(rectangle, (x, y))
 
     @staticmethod
     def get_cell(x_coordinate: int, y_coordinate: int, column_count: int=10)->int:
         """
-        Gets the index of a given cell from the given set of coordinates
+        Gets the index of a cell from the given set of coordinates
         :param (int) x_coordinate: the x coordinate of the base cell
         :param (int) y_coordinate: the y coordinate of the base cell
         :param (int) column_count: the number of columns that the grid has
@@ -63,19 +69,26 @@ class Cell:
                 or (y_coordinate > column_count - 1):
             return -1
 
+        # print("index: {} ".format(x_coordinate + y_coordinate * column_count))
         return x_coordinate + y_coordinate * column_count
 
     def get_neighbor(self, cells):
-        indexes = [self.get_cell(self.__x_coordinate, self.__y_coordinate - 1),  # top side
-                   self.get_cell(self.__x_coordinate, self.__y_coordinate + 1),  # bottom side
-                   self.get_cell(self.__x_coordinate - 1, self.__y_coordinate),  # left side
-                   self.get_cell(self.__x_coordinate + 1, self.__y_coordinate)]  # right side
+        indexes = [self.get_cell(self.x_coordinate, self.y_coordinate - 1),  # top side
+                   self.get_cell(self.x_coordinate, self.y_coordinate + 1),  # bottom side
+                   self.get_cell(self.x_coordinate - 1, self.y_coordinate),  # left side
+                   self.get_cell(self.x_coordinate + 1, self.y_coordinate)]  # right side
 
         neighbors = []
 
         for index in indexes:
-            if (index != -1) and (not cells[index].visited):
+            if (not cells[index].visited) and (index != -1):
                 neighbors.append(cells[index])
 
         if neighbors:
-            return random.choice(neighbors)
+            chosen_one = random.choice(neighbors)
+            cx, cy = chosen_one.x_coordinate, chosen_one.y_coordinate
+            idx = cx + cy * 10
+            return idx  # Since I have to modify the actual list, I have to get the index of the item
+            # then modify it from the calling environment. This will do for now
+
+        return None

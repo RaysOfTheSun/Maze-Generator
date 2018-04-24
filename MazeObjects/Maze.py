@@ -1,6 +1,5 @@
 from MazeObjects.Cell import Cell
-import pygame; import random
-import time
+import pygame
 
 class Maze:
     def __init__(self):
@@ -14,8 +13,8 @@ class Maze:
         self.surface = pygame.display.set_mode((surface_height, surface_width))
 
     def create(self):
-        for row in range(self.rows):
-            for column in range(self.columns):
+        for row in list(range(self.columns)):
+            for column in list(range(self.columns)):
                 grid_cell = Cell(row, column, self.cell_width)
                 self.grid.append(grid_cell)
 
@@ -24,6 +23,7 @@ class Maze:
 
     def build(self):
         clock = pygame.time.Clock()
+
         while True:
             user_action = pygame.event.poll()
             if user_action.type == pygame.QUIT:
@@ -35,11 +35,14 @@ class Maze:
                     grid_cell.draw(self.surface)
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
-            clock.tick(30)
 
-            self.current.visited = True
-            neighbor = self.current.get_neighbor(self.grid)
-            if neighbor:
-                self.current = neighbor
-                print(self.current)
+            self.current.highlight(self.surface)
+            chosen_index = self.current.get_neighbor(self.grid)
+            if chosen_index is not None:
+                if self.grid[chosen_index].visited:
+                    print("DAMN")
+                self.grid[chosen_index].visited = True
+                self.current = self.grid[chosen_index]
+
+            clock.tick(60)
 
