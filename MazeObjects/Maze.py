@@ -43,5 +43,5 @@ class Maze:
                 self.grid[chosen_index].visited = True
                 self.current = self.grid[chosen_index]
 
-            clock.tick(60)
+            clock.tick(5)
 
