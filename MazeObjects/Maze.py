@@ -1,6 +1,7 @@
 from MazeObjects.Cell import Cell
 import pygame
 
+
 class Maze:
     def __init__(self):
         surface_height, surface_width = 400, 400  # The dimensions of our py game window (height, width)
@@ -39,8 +40,6 @@ class Maze:
             self.current.highlight(self.surface)
             chosen_index = self.current.get_neighbor(self.grid)
             if chosen_index is not None:
-                if self.grid[chosen_index].visited:
-                    print("DAMN")
                 self.grid[chosen_index].visited = True
                 self.current = self.grid[chosen_index]
 

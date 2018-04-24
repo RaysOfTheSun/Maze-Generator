@@ -70,7 +70,7 @@ class Cell:
             return -1
 
         # print("index: {} ".format(x_coordinate + y_coordinate * column_count))
-        return x_coordinate + y_coordinate * column_count
+        return x_coordinate + y_coordinate * 10
 
     def get_neighbor(self, cells):
         indexes = [self.get_cell(self.x_coordinate, self.y_coordinate - 1),  # top side
@@ -81,14 +81,14 @@ class Cell:
         neighbors = []
 
         for index in indexes:
-            if (not cells[index].visited) and (index != -1):
-                neighbors.append(cells[index])
+            if index != -1:
+                if not cells[index].visited:
+                    neighbors.append(cells[index])
 
         if neighbors:
-            chosen_one = random.choice(neighbors)
-            cx, cy = chosen_one.x_coordinate, chosen_one.y_coordinate
-            idx = cx + cy * 10
-            return idx  # Since I have to modify the actual list, I have to get the index of the item
-            # then modify it from the calling environment. This will do for now
+            v = random.choice(neighbors)
+
+            return cells.index(v)  # Since I have to modify the actual list, I have to get the index
+            # of the item then modify it from the calling environment. This will do for now
 
         return None
