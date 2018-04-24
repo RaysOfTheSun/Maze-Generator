@@ -1,5 +1,5 @@
 import pygame
-from MazeObjects.Colors import Color as Color
+from MazeObjects.Colors import Color
 
 
 class Cell:
@@ -7,7 +7,7 @@ class Cell:
         """
         Creates an instance of the cell class
         :param x_coordinate:
-        :param y_coordinate: 
+        :param y_coordinate:
         :param width: How wide and tall the cell would be.
         """
         self.__x_coordinate = x_coordinate
@@ -15,6 +15,7 @@ class Cell:
         self.__width = width
         self.visited = False
         self.walls = [True, True, True, True]
+        self.__palette = Color()
 
     def draw(self, surface):
         """
@@ -26,11 +27,13 @@ class Cell:
         y = self.__y_coordinate * self.__width
 
         # draw upper side of the cell
-        pygame.draw.line(surface, Color.white, (x, y), ((x + self.__width), y))
+        pygame.draw.line(surface, self.__palette.white, (x, y), ((x + self.__width), y))
         # draw the bottom side of the cell
-        pygame.draw.line(surface, Color.white, (x, y + self.__width), ((x + self.__width), y + self.__width))
+        pygame.draw.line(surface, self.__palette.white, (x, y + self.__width),
+                         ((x + self.__width), y + self.__width))
         # draw the left side of the cell
-        pygame.draw.line(surface, Color.white, (x, y), ((x + self.__width), y + self.__width))
+        pygame.draw.line(surface, self.__palette.white, (x, y), (x, (y + self.__width)))
         # draw the right side of the cell
-        pygame.draw.line(surface, Color.white, ((x + self.__width), y), ((x + self.__width), y + self.__width))
+        pygame.draw.line(surface, self.__palette.white, ((x + self.__width), y),
+                         ((x + self.__width), (y + self.__width)))
 

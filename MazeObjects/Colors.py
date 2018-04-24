@@ -6,7 +6,3 @@ class Color:
         self.purple = (128, 0, 128)
         self.green = (0, 128, 0)
         self.yellow = (255, 255, 0)
-
-    @property
-    def white(self):
-        return self.white
