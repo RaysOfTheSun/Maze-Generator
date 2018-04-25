@@ -43,17 +43,21 @@ class Cell:
                              ((x + self.__width), (y + self.__width)))
 
         if self.visited:
-            rectangle = pygame.Surface((self.__width, self.__width))
-            rectangle.fill(self.__palette.purple)
-            rectangle.set_alpha(50)
-            surface.blit(rectangle, (x, y))
+            self.highlight(surface, self.__palette.purple, 50)
 
-    def highlight(self, surface):
+    def highlight(self, surface, color, alpha):
+        """
+        Fills the space occupied by the cell with the specified color
+        :param surface: The canvas where the cell is drawn
+        :param color: The color to be used to fill the cell
+        :param alpha: The alpha level to be used along with the specified color
+        :return: None
+        """
         x = self.x_coordinate * self.__width
         y = self.y_coordinate * self.__width
         rectangle = pygame.Surface((self.__width, self.__width))
-        rectangle.fill(self.__palette.green)
-        rectangle.set_alpha(255)
+        rectangle.fill(color)
+        rectangle.set_alpha(alpha)
         surface.blit(rectangle, (x, y))
 
     @staticmethod

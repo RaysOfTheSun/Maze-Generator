@@ -1,4 +1,5 @@
 from MazeObjects.Cell import Cell
+from MazeObjects.Colors import Color
 import pygame
 
 
@@ -9,11 +10,16 @@ class Maze:
         self.rows, self.columns = surface_width // self.cell_width, surface_height // self.cell_width
         self.grid = []
         self.current = None
+        self.__palette = Color()
 
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))
 
     def create(self):
+        """
+        Creates the initial grid of cells
+        :return:
+        """
         for row in list(range(self.columns)):
             for column in list(range(self.columns)):
                 grid_cell = Cell(row, column, self.cell_width)
@@ -23,6 +29,10 @@ class Maze:
         self.current = self.grid[0]
 
     def build(self):
+        """
+        Carves out the maze using Depth First Search and Recursive Backtracking
+        :return:
+        """
         clock = pygame.time.Clock()
 
         while True:
@@ -37,14 +47,11 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            # clock.tick(60)
+            clock.tick(5)
 
-            print("CURRENT INDEX: {}".format(self.grid.index(self.current)))
-            self.current.highlight(self.surface)
-            
+            self.current.highlight(self.surface, self.__palette.green, 255)
+
             chosen_index = self.current.get_neighbor(self.grid)
             if chosen_index is not None:
                 self.grid[chosen_index].visited = True
                 self.current = self.grid[chosen_index]
-
-
