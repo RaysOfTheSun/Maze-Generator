@@ -5,6 +5,9 @@ import pygame
 
 class Maze:
     def __init__(self):
+        """
+        Initializes an instance of the Maze class
+        """
         surface_height, surface_width = 400, 400  # The dimensions of our py game window (height, width)
         self.cell_width = surface_width // 10  # The width and height of our square shaped cell
         self.rows, self.columns = surface_width // self.cell_width, surface_height // self.cell_width
@@ -12,7 +15,6 @@ class Maze:
         self.grid_visited = []  # This one will act as our stack
         self.current = None
         self.__palette = Color()
-        self.test = []
 
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))

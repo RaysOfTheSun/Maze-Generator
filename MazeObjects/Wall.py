@@ -15,5 +15,10 @@ class Wall:
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
 
-    def draw(self):
-        pass
+    def draw(self, surface):
+        """
+        Draws a single line using the parameters given to the object during initialization
+        :param surface: The canvas in where the line is to be drawn on
+        :return: None
+        """
+        pygame.draw.line(surface, self.__palette.white, self.x_coordinate, self.y_coordinate)
