@@ -92,16 +92,9 @@ class Cell:
         neighbors = []
 
         for index in indexes:
-            if index != -1:
+            if index != -1 and cells[index].visited is False:
                 neighbors.append(cells[index])
 
         if neighbors:
             v = random.choice(neighbors)
-            cx, cy = v.x_coordinate, v.y_coordinate
-            idx = cx + cy * 10
-            if not cells[idx].visited:  # This condition is apparently not met in the previous conditional
-                return idx  # which is odd. Let's check for it here instead. Because, why not?
-            # Since I have to modify the actual list, I have to get the index
-            # of the item then modify it from the calling environment. This will do for now
-
-        return None
+            return cells.index(v)

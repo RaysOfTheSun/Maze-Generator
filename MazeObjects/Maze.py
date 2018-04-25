@@ -12,6 +12,7 @@ class Maze:
         self.grid_visited = []  # This one will act as our stack
         self.current = None
         self.__palette = Color()
+        self.test = []
 
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))
@@ -23,7 +24,7 @@ class Maze:
         """
         for row in list(range(self.columns)):
             for column in list(range(self.columns)):
-                grid_cell = Cell(row, column, self.cell_width)
+                grid_cell = Cell(column, row, self.cell_width)
                 self.grid_unvisited.append(grid_cell)
 
         self.grid_unvisited[0].visited = True
@@ -55,5 +56,7 @@ class Maze:
             chosen_index = self.current.get_neighbor(self.grid_unvisited)  # Step 2.1
             if chosen_index is not None:
                 self.grid_unvisited[chosen_index].visited = True
-                self.grid_unvisited.append(self.current)  # Step 2.2
                 self.current = self.grid_unvisited[chosen_index]
+                self.grid_visited.append(self.current)  # Step 2.2
+            elif self.grid_visited:
+                self.current = self.grid_visited.pop()
