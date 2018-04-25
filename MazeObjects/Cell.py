@@ -27,6 +27,13 @@ class Cell:
         x = self.x_coordinate * self.__width
         y = self.y_coordinate * self.__width
 
+        """
+        Some clean up plan:
+        Create a list of wall objects per cell so we could easily modify its attributes
+        if wall.show is false: show the wall.
+        for wall in self.walls: if wall.show: wall.draw(surface)
+        """
+
         # draw upper side of the cell
         if self.walls[0]:
             pygame.draw.line(surface, self.__palette.white, (x, y), ((x + self.__width), y))
