@@ -1,6 +1,7 @@
 from MazeObjects.Cell import Cell
 from MazeObjects.Colors import Color
 import pygame
+import random
 
 
 class Maze:
@@ -8,9 +9,9 @@ class Maze:
         """
         Initializes an instance of the Maze class
         """
-        surface_height, surface_width = 400, 400  # The dimensions of our py game window (height, width)
+        surface_height, surface_width = 600, 600   # The dimensions of our py game window (height, width)
         self.cell_width = surface_width // 10  # The width and height of our square shaped cell
-        self.rows, self.columns = surface_width // self.cell_width, surface_height // self.cell_width
+        self.rows, self.columns = surface_height // self.cell_width, surface_width // self.cell_width
         self.grid_unvisited = []
         self.grid_visited = []  # This one will act as our stack
         self.current = None
@@ -29,8 +30,36 @@ class Maze:
                 grid_cell = Cell(column, row, self.cell_width)
                 self.grid_unvisited.append(grid_cell)
 
-        self.grid_unvisited[0].visited = True
-        self.current = self.grid_unvisited[0]
+        random_cell = random.choice(self.grid_unvisited)  # Start building from a random cell lol. Is that a good idea?
+        self.grid_unvisited[self.grid_unvisited.index(random_cell)].visited = True
+        self.current = self.grid_unvisited[self.grid_unvisited.index(random_cell)]
+
+    def remove_walls(self, current, neighbor):
+        """
+        Removes the walls between the two given cells
+        :param current: The current cell
+        :param neighbor: The neighbor of the current cell
+        :return: None
+        """
+        current_idx = self.grid_unvisited.index(current)
+        neighbor_idx = self.grid_unvisited.index(neighbor)
+
+        if neighbor.x_coordinate - current.x_coordinate == -1:
+            current.walls[2]['left'].show = False
+            neighbor.walls[3]['right'].show = False
+        elif neighbor.x_coordinate - current.x_coordinate == 1:
+            current.walls[3]['right'].show = False
+            neighbor.walls[2]['left'].show = False
+        elif current.y_coordinate - neighbor.y_coordinate == 1:
+            current.walls[0]['top'].show = False
+            neighbor.walls[1]['bottom'].show = False
+        elif current.y_coordinate - neighbor.y_coordinate == -1:
+            current.walls[1]['bottom'].show = False
+            neighbor.walls[0]['top'].show = False
+
+        self.current = current
+        self.grid_unvisited[current_idx] = current
+        self.grid_unvisited[neighbor_idx] = neighbor
 
     def build(self):
         """
@@ -59,6 +88,7 @@ class Maze:
             if chosen_index is not None:
                 self.grid_visited.append(self.current)  # Step 2.2
                 self.grid_unvisited[chosen_index].visited = True
+                self.remove_walls(self.current, self.grid_unvisited[chosen_index])
                 self.current = self.grid_unvisited[chosen_index]
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()

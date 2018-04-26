@@ -20,6 +20,10 @@ class Cell:
         self.__palette = Color()
 
     def build_walls(self):
+        """
+        Defines each wall of the cell
+        :return: a collection of walls for the cell
+        """
         x = self.x_coordinate * self.__width
         y = self.y_coordinate * self.__width
 
@@ -28,7 +32,11 @@ class Cell:
         left = Wall((x, y), (x, (y + self.__width)))
         right = Wall(((x + self.__width), y), ((x + self.__width), (y + self.__width)))
 
-        walls = [top, bottom, left, right]
+        walls = [{'top': top},
+                 {'bottom': bottom},
+                 {'left': left},
+                 {'right': right}]
+
         return walls
 
     def draw(self, surface):
@@ -37,18 +45,11 @@ class Cell:
         Each cell is composed of four sides. Each side is an individual line.
         :return: nothing
         """
-        x = self.x_coordinate * self.__width
-        y = self.y_coordinate * self.__width
 
-        """
-        Some clean up plan:
-        Create a list of wall objects per cell so we could easily modify its attributes
-        if wall.show is false: show the wall.
-        for wall in self.walls: if wall.show: wall.draw(surface)
-        """
-        for wall in self.walls:
-            if wall.show:
-                wall.draw(surface)
+        for wall_identifier in self.walls:
+            for wall in wall_identifier:
+                if wall_identifier[wall].show:
+                    wall_identifier[wall].draw(surface)
 
         if self.visited:
             self.highlight(surface, self.__palette.purple, 50)
