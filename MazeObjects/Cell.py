@@ -32,10 +32,7 @@ class Cell:
         left = Wall((x, y), (x, (y + self.__width)))
         right = Wall(((x + self.__width), y), ((x + self.__width), (y + self.__width)))
 
-        walls = [{'top': top},
-                 {'bottom': bottom},
-                 {'left': left},
-                 {'right': right}]
+        walls = {'top': top, 'bottom': bottom, 'left': left, 'right': right}
 
         return walls
 
@@ -46,10 +43,9 @@ class Cell:
         :return: nothing
         """
 
-        for wall_identifier in self.walls:
-            for wall in wall_identifier:
-                if wall_identifier[wall].show:
-                    wall_identifier[wall].draw(surface)
+        for wall in self.walls:
+            if self.walls[wall].show:
+                self.walls[wall].draw(surface)
 
         if self.visited:
             self.highlight(surface, self.__palette.purple, 50)

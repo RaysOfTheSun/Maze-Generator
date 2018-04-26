@@ -23,7 +23,7 @@ class Maze:
     def create(self):
         """
         Creates the initial grid of cells
-        :return:
+        :return: None
         """
         for row in list(range(self.columns)):
             for column in list(range(self.columns)):
@@ -31,8 +31,8 @@ class Maze:
                 self.grid_unvisited.append(grid_cell)
 
         random_cell = random.choice(self.grid_unvisited)  # Start building from a random cell lol. Is that a good idea?
-        self.grid_unvisited[self.grid_unvisited.index(random_cell)].visited = True
-        self.current = self.grid_unvisited[self.grid_unvisited.index(random_cell)]
+        self.grid_unvisited[self.grid_unvisited.index(random_cell)].visited = True  # set that cell's properties first
+        self.current = self.grid_unvisited[self.grid_unvisited.index(random_cell)]  # assign it as the current cell
 
     def remove_walls(self, current, neighbor):
         """
@@ -44,18 +44,18 @@ class Maze:
         current_idx = self.grid_unvisited.index(current)
         neighbor_idx = self.grid_unvisited.index(neighbor)
 
-        if neighbor.x_coordinate - current.x_coordinate == -1:
-            current.walls[2]['left'].show = False
-            neighbor.walls[3]['right'].show = False
-        elif neighbor.x_coordinate - current.x_coordinate == 1:
-            current.walls[3]['right'].show = False
-            neighbor.walls[2]['left'].show = False
-        elif current.y_coordinate - neighbor.y_coordinate == 1:
-            current.walls[0]['top'].show = False
-            neighbor.walls[1]['bottom'].show = False
-        elif current.y_coordinate - neighbor.y_coordinate == -1:
-            current.walls[1]['bottom'].show = False
-            neighbor.walls[0]['top'].show = False
+        if (neighbor.x_coordinate - current.x_coordinate) == -1:
+            current.walls['left'].show = False
+            neighbor.walls['right'].show = False
+        elif (neighbor.x_coordinate - current.x_coordinate) == 1:
+            current.walls['right'].show = False
+            neighbor.walls['left'].show = False
+        elif (current.y_coordinate - neighbor.y_coordinate) == 1:
+            current.walls['top'].show = False
+            neighbor.walls['bottom'].show = False
+        elif (current.y_coordinate - neighbor.y_coordinate) == -1:
+            current.walls['bottom'].show = False
+            neighbor.walls['top'].show = False
 
         self.current = current
         self.grid_unvisited[current_idx] = current
@@ -81,8 +81,9 @@ class Maze:
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
             clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
+            # I also think the animation is fancy lol
 
-            self.current.highlight(self.surface, self.__palette.green, 255)
+            self.current.highlight(self.surface, self.__palette.green, 255)  # Just so I know whee I am in the grid
 
             chosen_index = self.current.get_neighbor(self.grid_unvisited)  # Step 2.1
             if chosen_index is not None:
