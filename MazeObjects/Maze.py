@@ -51,14 +51,14 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            clock.tick(5)  # Slows down the frame rate. I need to see if what it's doing is right
+            clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
 
             self.current.highlight(self.surface, self.__palette.green, 255)
 
             chosen_index = self.current.get_neighbor(self.grid_unvisited)  # Step 2.1
             if chosen_index is not None:
+                self.grid_visited.append(self.current)  # Step 2.2
                 self.grid_unvisited[chosen_index].visited = True
                 self.current = self.grid_unvisited[chosen_index]
-                self.grid_visited.append(self.current)  # Step 2.2
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()

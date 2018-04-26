@@ -3,17 +3,17 @@ import pygame
 
 
 class Wall:
-    def __init__(self, x_coordinate, y_coordinate):
+    def __init__(self, start_points, end_points):
         """
         Initializes an instance of the wall class
-        :param x_coordinate: The position of the wall on the x-axis
-        :param y_coordinate: The position of the wall on the y-axis
+        :param start_points: The position of the wall on the x-axis
+        :param end_points: The position of the wall on the y-axis
         """
         self.show = True
         self.__palette = Color()
         self.__color = self.__palette.white
-        self.x_coordinate = x_coordinate
-        self.y_coordinate = y_coordinate
+        self.x_coordinate = start_points
+        self.y_coordinate = end_points
 
     def draw(self, surface):
         """

@@ -1,5 +1,6 @@
 import pygame
 from MazeObjects.Colors import Color
+from MazeObjects.Wall import Wall
 import random
 
 
@@ -15,8 +16,20 @@ class Cell:
         self.y_coordinate = y_coordinate
         self.__width = width
         self.visited = False
-        self.walls = [True, True, True, True]
+        self.walls = self.build_walls()
         self.__palette = Color()
+
+    def build_walls(self):
+        x = self.x_coordinate * self.__width
+        y = self.y_coordinate * self.__width
+
+        top = Wall((x, y), ((x + self.__width), y))
+        bottom = Wall((x, y + self.__width), ((x + self.__width), y + self.__width))
+        left = Wall((x, y), (x, (y + self.__width)))
+        right = Wall(((x + self.__width), y), ((x + self.__width), (y + self.__width)))
+
+        walls = [top, bottom, left, right]
+        return walls
 
     def draw(self, surface):
         """
@@ -33,21 +46,9 @@ class Cell:
         if wall.show is false: show the wall.
         for wall in self.walls: if wall.show: wall.draw(surface)
         """
-
-        # draw upper side of the cell
-        if self.walls[0]:
-            pygame.draw.line(surface, self.__palette.white, (x, y), ((x + self.__width), y))
-        # draw the bottom side of the cell
-        if self.walls[1]:
-            pygame.draw.line(surface, self.__palette.white, (x, y + self.__width),
-                             ((x + self.__width), y + self.__width))
-        # draw the left side of the cell
-        if self.walls[2]:
-            pygame.draw.line(surface, self.__palette.white, (x, y), (x, (y + self.__width)))
-        # draw the right side of the cell
-        if self.walls[3]:
-            pygame.draw.line(surface, self.__palette.white, ((x + self.__width), y),
-                             ((x + self.__width), (y + self.__width)))
+        for wall in self.walls:
+            if wall.show:
+                wall.draw(surface)
 
         if self.visited:
             self.highlight(surface, self.__palette.purple, 50)
