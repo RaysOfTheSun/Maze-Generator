@@ -12,8 +12,8 @@ class Maze:
         surface_height, surface_width = 600, 600   # The dimensions of our py game window (height, width)
         self.cell_width = surface_width // 10  # The width and height of our square shaped cell
         self.rows, self.columns = surface_height // self.cell_width, surface_width // self.cell_width
-        self.grid_unvisited = []
-        self.grid_visited = []  # This one will act as our stack
+        self.grid = []
+        self.grid_visited = []  # This one will act as our stack for cells that have been previously visited.
         self.current = None
         self.__palette = Color()
 
@@ -29,11 +29,11 @@ class Maze:
         for row in list(range(self.columns)):
             for column in list(range(self.columns)):
                 grid_cell = Cell(column, row, self.cell_width)
-                self.grid_unvisited.append(grid_cell)
+                self.grid.append(grid_cell)
 
-        random_cell = random.choice(self.grid_unvisited)  # Start building from a random cell lol. Is that a good idea?
-        self.grid_unvisited[self.grid_unvisited.index(random_cell)].visited = True  # set that cell's properties first
-        self.current = self.grid_unvisited[self.grid_unvisited.index(random_cell)]  # assign it as the current cell
+        random_cell = random.choice(self.grid)  # Start building from a random cell lol. Is that a good idea?
+        self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
+        self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
 
     def remove_walls(self, current, neighbor):
         """
@@ -42,8 +42,8 @@ class Maze:
         :param neighbor: The neighbor of the current cell
         :return: None
         """
-        current_idx = self.grid_unvisited.index(current)
-        neighbor_idx = self.grid_unvisited.index(neighbor)
+        current_idx = self.grid.index(current)
+        neighbor_idx = self.grid.index(neighbor)
 
         if (neighbor.x_coordinate - current.x_coordinate) == -1:
             current.walls['left'].show = False
@@ -59,8 +59,8 @@ class Maze:
             neighbor.walls['top'].show = False
 
         self.current = current
-        self.grid_unvisited[current_idx] = current
-        self.grid_unvisited[neighbor_idx] = neighbor
+        self.grid[current_idx] = current
+        self.grid[neighbor_idx] = neighbor
 
     def build(self):
         """
@@ -75,8 +75,8 @@ class Maze:
                 pygame.quit()
                 break
 
-            if self.grid_unvisited:  # if there a cells in the grid, display them
-                for grid_cell in self.grid_unvisited:
+            if self.grid:  # if there a cells in the grid, display them
+                for grid_cell in self.grid:
                     grid_cell.draw(self.surface)
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
@@ -86,11 +86,11 @@ class Maze:
 
             self.current.highlight(self.surface, self.__palette.green, 255)  # Just so I know whee I am in the grid
 
-            chosen_index = self.current.get_neighbor(self.grid_unvisited)  # Step 2.1
+            chosen_index = self.current.get_neighbor(self.grid)  # Step 2.1
             if chosen_index is not None:
                 self.grid_visited.append(self.current)  # Step 2.2
-                self.grid_unvisited[chosen_index].visited = True
-                self.remove_walls(self.current, self.grid_unvisited[chosen_index])
-                self.current = self.grid_unvisited[chosen_index]
+                self.grid[chosen_index].visited = True
+                self.remove_walls(self.current, self.grid[chosen_index])
+                self.current = self.grid[chosen_index]
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()
