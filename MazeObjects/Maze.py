@@ -19,6 +19,7 @@ class Maze:
 
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))
+        pygame.display.set_caption("Maze Generator")
 
     def create(self):
         """
