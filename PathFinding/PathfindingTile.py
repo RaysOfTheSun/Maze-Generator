@@ -9,7 +9,7 @@ class Tile:
         self.F_Score = -1
         self.x_coordinates, self.y_coordinates = coordinates
 
-    def compute_estimate(self, coordinates):
+    def compute_scores(self, coordinates):
         """
         Computes the H score for the tile
         The H score is the distance from the cell to the target cell disregarding obstacles
@@ -17,7 +17,13 @@ class Tile:
         :return: The H score of the tile relative to the target cell
         """
         goal_x, goal_y = coordinates
-        return abs(((goal_x - self.x_coordinates) + (goal_y - self.y_coordinates)))  # Manhattan Distance Formula
+        self.H_Score = abs(((goal_x - self.x_coordinates) +
+                            (goal_y - self.y_coordinates)))  # Manhattan Distance Formula
+
+        self.F_Score = self.F_Score + self.G_Score  # The F score is the overall score of the tile
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 from MazeObjects.Cell import Cell
 from MazeObjects.Colors import Color
+from PathFinding.Pathfinder import Pathfinder
 import pygame
 import random
 
@@ -34,6 +35,8 @@ class Maze:
         random_cell = random.choice(self.grid)  # Start building from a random cell lol. Is that a good idea?
         self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
         self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
+        pathfinder = Pathfinder((self.current.x_coordinate, self.current.y_coordinate)
+                                , (self.grid[99].x_coordinate, self.grid[99].y_coordinate), self.grid)
 
     def remove_walls(self, current, neighbor):
         """
