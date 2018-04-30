@@ -1,30 +1,20 @@
 class Tile:
     def __init__(self, coordinates):
-        """
-        Initializes an instance of the Tile class
-        :param coordinates: The position of the tile in the grid (Tuple)
-        """
-        self.G_Score = 0
-        self.H_Score = 0
-        self.F_Score = 0
-        self.x_coordinates, self.y_coordinates = coordinates
+        self.x_coordinate, self.y_coordinate = coordinates
+        self.g_score, self.h_score, self.f_score = 0, 0, 0
 
-    def compute_scores(self, goal_coordinates, previous_cell):
+    def score(self, previous_tile_g_score, goal):
         """
-        Computes the H score for the tile
-        The H score is the distance from the cell to the target cell disregarding obstacles
-        :param goal_coordinates: The coordinates of the target cell in the grid (Tuple)
-        :param previous_cell: The cell where this cell was based on
-        :return: The H score of the tile relative to the target cell
+        Computes for the G, H and F scores of the tile
+        :param previous_tile_g_score: (Tile) The parent of this tile
+        :param goal: The target tile in the grid
+        :return: None
         """
-        goal_x, goal_y = goal_coordinates
-        self.H_Score = abs(((goal_x - self.x_coordinates) +
-                            (goal_y - self.y_coordinates)))  # Manhattan Distance Formula
-
-        self.G_Score = previous_cell.G_score + 1
-        self.F_Score = self.F_Score + self.G_Score  # The F score is the overall score of the tile
-
-
+        goal_x_coordinate, goal_y_coordinate = goal.x_coordinate, goal.y_coordinate
+        self.g_score = previous_tile_g_score + 1
+        self.h_score = abs((goal_x_coordinate - self.x_coordinate) +
+                           (goal_y_coordinate - self.y_coordinate))
+        self.f_score = self.g_score + self.h_score
 
 
 

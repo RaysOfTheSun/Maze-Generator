@@ -17,6 +17,7 @@ class Maze:
         self.grid_visited = []  # This one will act as our stack for cells that have been previously visited.
         self.current = None
         self.__palette = Color()
+        self.pathfinder = None
 
         pygame.init()
         self.surface = pygame.display.set_mode((surface_height, surface_width))
@@ -32,11 +33,10 @@ class Maze:
                 grid_cell = Cell(column, row, self.cell_width)
                 self.grid.append(grid_cell)
 
-        random_cell = random.choice(self.grid)  # Start building from a random cell lol. Is that a good idea?
+        random_cell = self.grid[0]  # Start building from a random cell lol. Is that a good idea?
         self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
         self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
-        pathfinder = Pathfinder((self.current.x_coordinate, self.current.y_coordinate)
-                                , (self.grid[99].x_coordinate, self.grid[99].y_coordinate), self.grid)
+        self.pathfinder = Pathfinder(self.grid, (9, 9))
 
     def remove_walls(self, current, neighbor):
         """
@@ -84,10 +84,10 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
+            # clock.tick(1200)  # Slows down the frame rate. I need to see if what it's doing is right
             # I also think the animation is fancy lol
 
-            self.current.highlight(self.surface, self.__palette.green, 255)  # Just so I know whee I am in the grid
+            self.current.highlight(self.surface, self.__palette.yellow, 255)  # Just so I know where I am in the grid
 
             chosen_index = self.current.get_neighbor(self.grid)  # Step 2.1
             if chosen_index is not None:
@@ -100,8 +100,8 @@ class Maze:
             else:
                 # All the tiles in the grid has been visited and the maze is complete.
                 # This is where the pathfinder will come in
-
-                goal = self.grid[len(self.grid) - 1]
-                pathfinder = Pathfinder((0, 0), (goal.x_coordinate, goal.y_coordinate), self.grid)
-                self.current = self.grid[pathfinder.x_coordinate + pathfinder.y_coordinate * self.columns]
-                self.current.highlight(self.surface, self.__palette.blue, 255)
+                if self.pathfinder.x_coordinate != 9 and self.pathfinder.y_coordinate != 9:
+                    pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
+                    self.current = pathfinder
+                    self.current.highlight(self.surface, self.__palette.green, 255)  # mark the pathfinder
+                    self.pathfinder.walk()

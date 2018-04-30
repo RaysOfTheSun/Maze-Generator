@@ -4,30 +4,38 @@ from PathFinding.PathfindingTile import Tile
 
 
 class Pathfinder:
-    def __init__(self, initial_coordinates, goal_coordinates, grid):
-        self.x_coordinate, self.y_coordinate = initial_coordinates
-        self.x_goal, self.y_goal = goal_coordinates
-        self.open_paths, self.closed_paths = [], []
-        self.paths = [Tile((cell.x_coordinate, cell.y_coordinate)) for cell in grid]
+    def __init__(self, grid, goal):
+        self.x_coordinate, self.y_coordinate = 0, 0
+        self.goal_x_coordinate, self.goal_y_coordinate = goal
+        self.open_list, self.closed_list = [], []
+        self.maze = grid
+        self.grid = [Tile((cell.x_coordinate, cell.y_coordinate)) for cell in grid]
+        self.tile = self.grid[0]
 
-    def walk(self, x_coordinate, y_coordinate):
-        """
-        Obtains the current cell's neighbors based on its position on the grid then moves the pathfinder
-        to the tile with the lowest F score
-        :param x_coordinate: The point representing the position of the target tile in the x-axis of the grid
-        :param y_coordinate: The point representing the position of the target tile in the y-axis of the grid
-        :return:
-        """
-        neighbors = {'top': (x_coordinate, (y_coordinate + 1)), 'bottom': (x_coordinate, (y_coordinate + 1)),
-                     'left': ((x_coordinate - 1), y_coordinate), 'right': ((x_coordinate + 1), y_coordinate)}
+    def walk(self):
+        neighbors = {'top': (self.x_coordinate, self.y_coordinate + 1),
+                     'bottom': (self.x_coordinate, self.y_coordinate + 1),
+                     'left': (self.x_coordinate - 1, self.y_coordinate),
+                     'right': (self.x_coordinate + 1, self.y_coordinate)}
 
         for neighbor in neighbors:
-            # Obtain the cell represented by each of the coordinates then compute their scores
-            neighbor_x, neighbor_y = neighbors[neighbor]
-            curr_neighbor = self.paths[neighbor_x + neighbor_y * (len(self.paths) // 10)]
-            curr_neighbor.compute_scores((self.x_goal, self.y_goal))
-            self.open_paths.append(curr_neighbor)
+            coordinates = neighbors[neighbor]
+            neighbor_idx = coordinates[1] + coordinates[0] * 10
+            if (coordinates[0] < 0) or (coordinates[1] < 0) or (coordinates[0] > 9) or (coordinates[1] > 9)\
+                    or (neighbor_idx < 0):
+                continue
+            elif self.grid[neighbor_idx] in self.closed_list:
+                continue
+            elif self.maze[self.grid.index(self.tile)].walls[neighbor].show is True:
+                current = self.grid[neighbor_idx]
+                current.score(self.tile.g_score, self.grid[99])
+                if current not in self.closed_list:
+                    self.open_list.append(current)
 
-        self.open_paths.sort(key=lambda n: n.F_score, reverse=True)  # sort the list by F score in ascending order
+            if self.open_list:
+                self.open_list.sort(key=lambda tile: tile.f_score, reverse=True)
 
-        return self.open_paths[0]
+                chosen = self.open_list[0]
+                self.tile = chosen
+                self.x_coordinate, self.y_coordinate = (chosen.x_coordinate, chosen.y_coordinate)
+                self.closed_list.append(chosen)
