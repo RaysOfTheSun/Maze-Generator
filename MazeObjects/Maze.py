@@ -97,3 +97,11 @@ class Maze:
                 self.current = self.grid[chosen_index]
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()
+            else:
+                # All the tiles in the grid has been visited and the maze is complete.
+                # This is where the pathfinder will come in
+
+                goal = self.grid[len(self.grid) - 1]
+                pathfinder = Pathfinder((0, 0), (goal.x_coordinate, goal.y_coordinate), self.grid)
+                self.current = self.grid[pathfinder.x_coordinate + pathfinder.y_coordinate * self.columns]
+                self.current.highlight(self.surface, self.__palette.blue, 255)
