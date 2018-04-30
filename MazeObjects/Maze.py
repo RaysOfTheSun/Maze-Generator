@@ -84,7 +84,7 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            # clock.tick(1200)  # Slows down the frame rate. I need to see if what it's doing is right
+            clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
             # I also think the animation is fancy lol
 
             self.current.highlight(self.surface, self.__palette.yellow, 255)  # Just so I know where I am in the grid
@@ -97,11 +97,10 @@ class Maze:
                 self.current = self.grid[chosen_index]
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()
-            else:
+            elif self.grid.index(self.current) != 99:
                 # All the tiles in the grid has been visited and the maze is complete.
                 # This is where the pathfinder will come in
-                if self.pathfinder.x_coordinate != 9 and self.pathfinder.y_coordinate != 9:
-                    pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
-                    self.current = pathfinder
-                    self.current.highlight(self.surface, self.__palette.green, 255)  # mark the pathfinder
-                    self.pathfinder.walk()
+                pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
+                self.current = pathfinder
+                self.pathfinder.walk()
+

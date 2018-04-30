@@ -13,29 +13,24 @@ class Pathfinder:
         self.tile = self.grid[0]
 
     def walk(self):
-        neighbors = {'top': (self.x_coordinate, self.y_coordinate + 1),
+        neighbors = {'top': (self.x_coordinate, self.y_coordinate - 1),
                      'bottom': (self.x_coordinate, self.y_coordinate + 1),
                      'left': (self.x_coordinate - 1, self.y_coordinate),
                      'right': (self.x_coordinate + 1, self.y_coordinate)}
 
         for neighbor in neighbors:
             coordinates = neighbors[neighbor]
-            neighbor_idx = coordinates[1] + coordinates[0] * 10
-            if (coordinates[0] < 0) or (coordinates[1] < 0) or (coordinates[0] > 9) or (coordinates[1] > 9)\
-                    or (neighbor_idx < 0):
+            neighbor_idx = coordinates[0] + coordinates[1] * 10
+            if coordinates[0] < 0 or coordinates[1] < 0 or neighbor_idx > 99:
                 continue
-            elif self.grid[neighbor_idx] in self.closed_list:
-                continue
-            elif self.maze[self.grid.index(self.tile)].walls[neighbor].show is True:
-                current = self.grid[neighbor_idx]
-                current.score(self.tile.g_score, self.grid[99])
-                if current not in self.closed_list:
-                    self.open_list.append(current)
+            else:
+                curr = self.grid[neighbor_idx]
+                curr.score(self.tile.g_score, (self.goal_x_coordinate, self.goal_y_coordinate))
+                self.open_list.append(curr)
 
-            if self.open_list:
-                self.open_list.sort(key=lambda tile: tile.f_score, reverse=True)
+        self.open_list.sort(key=lambda n: n.f_score)
 
-                chosen = self.open_list[0]
-                self.tile = chosen
-                self.x_coordinate, self.y_coordinate = (chosen.x_coordinate, chosen.y_coordinate)
-                self.closed_list.append(chosen)
+        chosen = self.open_list[0]
+        self.tile = chosen
+        self.x_coordinate, self.y_coordinate = chosen.x_coordinate, chosen.y_coordinate
+        self.open_list.clear()

@@ -10,7 +10,7 @@ class Tile:
         :param goal: The target tile in the grid
         :return: None
         """
-        goal_x_coordinate, goal_y_coordinate = goal.x_coordinate, goal.y_coordinate
+        goal_x_coordinate, goal_y_coordinate = goal
         self.g_score = previous_tile_g_score + 1
         self.h_score = abs((goal_x_coordinate - self.x_coordinate) +
                            (goal_y_coordinate - self.y_coordinate))
