@@ -37,6 +37,7 @@ class Maze:
         self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
         self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
         self.pathfinder = Pathfinder(self.grid, (9, 9))
+        # self.grid[1 + 0].highlight(self.surface, self.__palette.white, 255)
 
     def remove_walls(self, current, neighbor):
         """
@@ -84,7 +85,7 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
+            clock.tick(160)  # Slows down the frame rate. I need to see if what it's doing is right
             # I also think the animation is fancy lol
 
             self.current.highlight(self.surface, self.__palette.yellow, 255)  # Just so I know where I am in the grid
@@ -97,10 +98,12 @@ class Maze:
                 self.current = self.grid[chosen_index]
             elif self.grid_visited:
                 self.current = self.grid_visited.pop()
-            elif self.grid.index(self.current) != 99:
+            else:
+                clock.tick(10)  # Slows down the frame rate. I need to see if what it's doing is right
+                if self.grid.index(self.current) != 99:
                 # All the tiles in the grid has been visited and the maze is complete.
                 # This is where the pathfinder will come in
-                pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
-                self.current = pathfinder
-                self.pathfinder.walk()
+                    pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
+                    self.current = pathfinder
+                    self.pathfinder.walk()
 
