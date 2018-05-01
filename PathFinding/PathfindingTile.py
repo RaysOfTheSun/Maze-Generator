@@ -13,6 +13,7 @@ class Tile:
         """
         goal_x_coordinate, goal_y_coordinate = goal
         self.g_score = previous_tile_g_score + 1
+        # The H score is computed using the manhattan distance formula: (|x_tar - x_self|) + (|y_tar - y_self|)
         self.h_score = abs((goal_x_coordinate - self.x_coordinate) +
                            (goal_y_coordinate - self.y_coordinate))
         self.f_score = self.g_score + self.h_score

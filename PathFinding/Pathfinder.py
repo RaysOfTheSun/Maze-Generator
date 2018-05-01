@@ -13,7 +13,13 @@ class Pathfinder:
         self.tile = self.grid[0]
         self.tile.score(-1, (9, 9))
 
-    def check_wal(self, position, target):
+    def is_passable(self, position, target):
+        """
+        Checks if the pathfinder's chosen neighbor is not barricaded by walls
+        :param position: The directional position of the chosen neighbor
+        :param target: The
+        :return:
+        """
         curr = self.x_coordinate + self.y_coordinate * 10
         if position is 'bottom':
             if self.maze[curr].walls[position].show is True and \
@@ -34,7 +40,11 @@ class Pathfinder:
 
         return False
 
-    def walk(self):
+    def path_find(self):
+        """
+        Makes the path finder find the best path to the target
+        :return: None
+        """
         neighbors = {'top': (self.x_coordinate, self.y_coordinate - 1),
                      'bottom': (self.x_coordinate, self.y_coordinate + 1),
                      'left': (self.x_coordinate - 1, self.y_coordinate),
@@ -45,7 +55,7 @@ class Pathfinder:
             neighbor_idx = coordinates[0] + coordinates[1] * 10
             if coordinates[0] < 0 or coordinates[1] < 0 or neighbor_idx > 99\
                     or coordinates[0] > 9 or coordinates[1] > 9\
-                    or self.check_wal(neighbor, neighbor_idx) \
+                    or self.is_passable(neighbor, neighbor_idx) \
                     or self.grid[neighbor_idx] in self.closed_list:
                 continue
 
@@ -69,4 +79,3 @@ class Pathfinder:
             chosen = self.tile.parent
             self.tile = chosen
             self.x_coordinate, self.y_coordinate = chosen.x_coordinate, chosen.y_coordinate
-\
