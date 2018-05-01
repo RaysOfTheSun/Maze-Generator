@@ -11,6 +11,7 @@ class Pathfinder:
         self.maze = grid
         self.grid = [Tile((cell.x_coordinate, cell.y_coordinate)) for cell in grid]
         self.tile = self.grid[0]
+        self.tile.score(-1, (9, 9))
 
     def check_wal(self, position, target):
         curr = self.x_coordinate + self.y_coordinate * 10
@@ -52,12 +53,20 @@ class Pathfinder:
             curr.score(self.tile.g_score, (self.goal_x_coordinate, self.goal_y_coordinate))
             self.open_list.append(curr)
 
+        # sort the tiles in the open list by f score in ascending order
+        # so we always get the tile with the smallest possible f score
         self.open_list.sort(key=lambda n: n.f_score)
 
         if self.open_list:
             chosen = self.open_list[0]
-            if self.tile.f_score >= chosen.f_score:
-                self.tile = chosen
-                self.x_coordinate, self.y_coordinate = chosen.x_coordinate, chosen.y_coordinate
-                self.closed_list.append(chosen)
-                self.open_list.clear()
+            parent = self.tile
+            chosen.parent = parent
+            self.tile = chosen
+            self.x_coordinate, self.y_coordinate = chosen.x_coordinate, chosen.y_coordinate
+            self.closed_list.append(chosen)
+            self.open_list.clear()
+        else:
+            chosen = self.tile.parent
+            self.tile = chosen
+            self.x_coordinate, self.y_coordinate = chosen.x_coordinate, chosen.y_coordinate
+\

@@ -2,6 +2,7 @@ class Tile:
     def __init__(self, coordinates):
         self.x_coordinate, self.y_coordinate = coordinates
         self.g_score, self.h_score, self.f_score = 0, 0, 0
+        self.parent = None
 
     def score(self, previous_tile_g_score, goal):
         """

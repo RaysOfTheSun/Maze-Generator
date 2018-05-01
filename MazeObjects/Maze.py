@@ -33,7 +33,7 @@ class Maze:
                 grid_cell = Cell(column, row, self.cell_width)
                 self.grid.append(grid_cell)
 
-        random_cell = self.grid[0]  # Start building from a random cell lol. Is that a good idea?
+        random_cell = random.choice(self.grid)  # Start building from a random cell lol. Is that a good idea?
         self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
         self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
         self.pathfinder = Pathfinder(self.grid, (9, 9))
