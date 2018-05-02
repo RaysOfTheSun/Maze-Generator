@@ -103,7 +103,7 @@ class Maze:
             elif self.grid_visited:  # backtrack
                 self.current = self.grid_visited.pop()
             else:
-                clock.tick(20)  # Slows down the frame rate so the path finder can be properly seen as it searches
+                clock.tick(30)  # Slows down the frame rate so the path finder can be properly seen as it searches
                 if self.grid.index(self.current) != 99:
                     self.path_finding = True
                     # All the tiles in the grid has been visited and the maze has been carved out.
