@@ -23,7 +23,7 @@ Cell.prototype.BuildWalls = function () {
   this.Walls.push(bottom);
   this.Walls.push(right);
   this.Walls.push(left);
-  }
+};
 
   Cell.prototype.Draw = function () {
     stroke(255);
