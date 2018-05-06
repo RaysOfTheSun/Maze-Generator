@@ -1,8 +1,11 @@
+var maze = undefined;
+
 function setup(){
-  cell = new Cell(5, 4, 50);
   createCanvas(600, 600);
+  maze = new Maze(20, width, height);
 }
 
 function draw(){
   background(51);
+  maze.Draw();
 }
