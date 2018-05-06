@@ -1,9 +1,9 @@
 function CellWall (start, end){
-  this.show = false;
+  this.show = true;
   this.start = start;
   this.end = end;
 }
 
-CellWall.prototype.Build = function () {
-  line(start[0], start[1], end[0], end[1]);
+CellWall.prototype.Draw = function () {
+  line(this.start[0], this.start[1], this.end[0], this.end[1]);
 }

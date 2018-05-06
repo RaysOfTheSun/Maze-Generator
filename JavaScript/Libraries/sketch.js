@@ -1,7 +1,8 @@
 function setup(){
   cell = new Cell(5, 4, 50);
+  createCanvas(600, 600);
 }
 
 function draw(){
-  ellipse(50, 50, 80, 80);
+  background(51);
 }

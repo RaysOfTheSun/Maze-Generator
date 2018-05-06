@@ -7,10 +7,18 @@ function Cell (x_coordinate, y_coordinate, width) {
 }
 
 Cell .prototype.BuildWalls = function () {
-  let wall_coordinates = {'Top':[this.x_coordinate, this.y_coordinate + 1],
-                          'bottom': [this.x_coordinate, this.y_coordinate - 1],
-                          'left': [this.x_coordinate - 1, this.y_coordinate],
-                          'right': [this.x_coordinate + 1, this.y_coordinate]
-                        };
+  let top = new CellWall([this.x_coordinate, this.y_coordinate],
+    [this.x_coordinate + this.width, this.y_coordinate]);
+  let bottom = new CellWall([this.x_coordinate, this.y_coordinate + this.width],
+    [this.x_coordinate + this.width, this.y_coordinate + this.width])
+  let right = new CellWall([this.x_coordinate + this.width, this.y_coordinate],
+    [this.x_coordinate + this.width, this.y_coordinate + this.width]);
+  let left = new CellWall([this.x_coordinate, this.y_coordinate],
+    [this.x_coordinate, this.y_coordinate + this.width]);
 
-};
+  this.Walls.push(top);
+  this.Walls.push(bottom);
+  this.Walls.push(right);
+  this.Walls.push(left);
+
+  }
