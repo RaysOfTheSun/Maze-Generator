@@ -1,0 +1,70 @@
+## GITATTRIBUTES FOR WEB PROJECTS
+#
+# These settings are for any web project.
+#
+# Details per file setting:
+#   text    These files should be normalized (i.e. convert CRLF to LF).
+#   binary  These files are binary and should be left untouched.
+#
+# Note that binary is a macro for -text -diff.
+######################################################################
+
+## AUTO-DETECT
+##   Handle line endings automatically for files detected as
+##   text and leave all files detected as binary untouched.
+##   This will handle all files NOT defined below.
+* text=auto
+
+## SOURCE CODE
+*.bat      text eol=crlf
+*.coffee   text
+*.css      text
+*.htm      text
+*.html     text
+*.inc      text
+*.ini      text
+*.js       text
+*.json     text
+*.jsx      text
+*.less     text
+*.od       text
+*.onlydata text
+*.php      text
+*.pl       text
+*.py       text
+*.rb       text
+*.sass     text
+*.scm      text
+*.scss     text
+*.sh       text eol=lf
+*.sql      text
+*.styl     text
+*.tag      text
+*.ts       text
+*.tsx      text
+*.xml      text
+*.xhtml    text
+
+# Basic .gitattributes for a python repo.
+
+# Source files
+# ============
+*.pxd		text
+*.py 		text
+*.py3 		text
+*.pyw 		text
+*.pyx  		text
+
+# Binary files
+# ============
+*.db		binary
+*.p 		binary
+*.pkl 		binary
+*.pyc 		binary
+*.pyd		binary
+*.pyo 		binary
+
+# Note: .db, .p, and .pkl files are associated
+# with the python modules ``pickle``, ``dbm.*``,
+# ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
+# (among others).
