@@ -1,5 +1,5 @@
 function setup(){
-
+  cell = new Cell(5, 4, 50);
 }
 
 function draw(){
