@@ -1,2 +1,2 @@
 # Maze-Generator
-A maze generator along with a path finding something that would go through the generated maze
+A simple implementation of the recursive back tracker algorithm that uses depth-first search (DFS) to construct a maze in a given area. This also shows an implementation of the A* path finding algorithm to solve the randomly generated maze.
