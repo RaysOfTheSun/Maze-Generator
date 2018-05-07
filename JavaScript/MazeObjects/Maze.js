@@ -10,7 +10,7 @@ function Maze(cell_width, grid_width, grid_height) {
 Maze.prototype.Initialize = function () {
   for(let row = 0; row < this.rows; row++){
     for(let column = 0; column < this.columns; column++){
-      cell = new Cell(row, column, this.cell_width);
+      cell = new Cell(column, row, this.cell_width);
       this.Cells.push(cell);
     }
   }
