@@ -83,3 +83,9 @@ Cell.prototype.GetNeighbor = function (grid, grid_width = 10) {
 
   return random(neighbors);
 };
+
+Cell.prototype.Highlight = function (red, green, blue) {
+  fill(red, green, blue, 128);
+  rect(this.x_coordinate * this.width, this.y_coordinate * this.width,
+    this.width, this.width);
+};

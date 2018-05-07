@@ -11,13 +11,14 @@ function draw(){
   frameRate(15);
   background(51);
   maze.Draw();
-
+  current.Highlight(255, 255, 0);
   current.visited = true;
   let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
-  maze.visited_cells.push(current);
-  current = next;
-  // console.log(next);
-
-  // console.log(current);
-  // console.log(maze.Cells.length);
+  if (next != undefined) {
+    maze.visited_cells.push(current);
+    current = next;
+  }
+  else {
+    current = maze.visited_cells.pop();
+  }
 }
