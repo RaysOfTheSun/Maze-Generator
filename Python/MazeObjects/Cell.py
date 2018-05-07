@@ -81,11 +81,11 @@ class Cell:
         # print("index: {} ".format(x_coordinate + y_coordinate * column_count))
         return x_coordinate + (y_coordinate * column_count)
 
-    def get_neighbor(self, cells):
-        indexes = [self.get_cell(self.x_coordinate, self.y_coordinate - 1),  # top side
-                   self.get_cell(self.x_coordinate, self.y_coordinate + 1),  # bottom side
-                   self.get_cell(self.x_coordinate - 1, self.y_coordinate),  # left side
-                   self.get_cell(self.x_coordinate + 1, self.y_coordinate)]  # right side
+    def get_neighbor(self, cells, width):
+        indexes = [self.get_cell(self.x_coordinate, self.y_coordinate - 1, width),  # top side
+                   self.get_cell(self.x_coordinate, self.y_coordinate + 1, width),  # bottom side
+                   self.get_cell(self.x_coordinate - 1, self.y_coordinate, width),  # left side
+                   self.get_cell(self.x_coordinate + 1, self.y_coordinate, width)]  # right side
 
         neighbors = []
 

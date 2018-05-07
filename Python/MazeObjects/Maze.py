@@ -11,7 +11,7 @@ class Maze:
         Initializes an instance of the Maze class
         """
         surface_height, surface_width = 600, 600   # The dimensions of our py game window (height, width)
-        self.cell_width = surface_width // 10  # The width and height of our square shaped cell
+        self.cell_width = 20  # The width and height of our square shaped cell
         self.rows, self.columns = surface_height // self.cell_width, surface_width // self.cell_width
         self.grid = []
         self.grid_visited = []  # This one will act as our stack for cells that have been previously visited.
@@ -94,7 +94,7 @@ class Maze:
             else:
                 self.current.highlight(self.surface, self.__palette.white, 255)  # Just so I know where I am in the grid
 
-            chosen_index = self.current.get_neighbor(self.grid)  # Step 2.1
+            chosen_index = self.current.get_neighbor(self.grid, self.rows)  # Step 2.1
             if chosen_index is not None:
                 self.grid_visited.append(self.current)  # Step 2.2
                 self.grid[chosen_index].visited = True
