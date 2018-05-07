@@ -14,6 +14,9 @@ function Cell (x_coordinate, y_coordinate, width) {
   this.BuildWalls();
 }
 
+/**
+ * Initializes each wall of the cell
+ */
 Cell.prototype.BuildWalls = function () {
   let x = this.x_coordinate * this.width;
   let y = this.y_coordinate * this.width;
@@ -29,6 +32,9 @@ Cell.prototype.BuildWalls = function () {
   this.Walls = {"top": top, "bottom": bottom, "right": right, "left": left};
 };
 
+/**
+ * Draws the cell onto the canvas
+ */
 Cell.prototype.Draw = function () {
   for (var wall in this.Walls) {
     if (this.Walls[wall].show) {
@@ -61,12 +67,16 @@ Cell.prototype.GetNeighborIndex = function (x_coordinate, y_coordinate, grid_row
         || (y_coordinate > grid_row_count - 1)){
           return - 1;
         }
-
-    // console.log(`${x_coordinate}, ${y_coordinate}, ${grid_row_count}`);
-    // console.log(`The index would be: ${x_coordinate + y_coordinate * floor(grid_row_count / this.width)}`);
+        
     return x_coordinate + y_coordinate * grid_row_count;
 };
 
+/**
+ * Gets the next neighbor of the current cell
+ * @param  {Array} grid            The collection of cells
+ * @param  {Number} [grid_width=10] The number of columns in the grid
+ * @return {Cell}                 The next cell to be visited
+ */
 Cell.prototype.GetNeighbor = function (grid, grid_width = 10) {
   let neighbor_indexes = [
     this.GetNeighborIndex(this.x_coordinate, this.y_coordinate + 1, grid_width),
@@ -86,12 +96,22 @@ Cell.prototype.GetNeighbor = function (grid, grid_width = 10) {
   return random(neighbors);
 };
 
+/**
+ * Draws a rectangle that is the same dimensions as the cell
+ * @param  {Number} red   Red value
+ * @param  {Number} green Green value
+ * @param  {Number} blue  Blue value
+ */
 Cell.prototype.Highlight = function (red, green, blue) {
   fill(red, green, blue, 128);
   rect(this.x_coordinate * this.width, this.y_coordinate * this.width,
     this.width, this.width);
 };
 
+/**
+ * Removes the wall between the current cell and its neighbor
+ * @param  {[type]} neighbor The neighboring cell object
+ */
 Cell.prototype.RemoveWalls = function (neighbor) {
   if ((neighbor.x_coordinate - this.x_coordinate) == 1){
     this.Walls["right"].show = false;
