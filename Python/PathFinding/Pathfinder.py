@@ -17,8 +17,9 @@ class Pathfinder:
         """
         Checks if the pathfinder's chosen neighbor is not barricaded by walls
         :param position: The directional position of the chosen neighbor
-        :param target: The
-        :return:
+        :param target: The index of the chosen neighbor in the grid array
+        :param grid_width: The number of columns in the grid
+        :return: None
         """
         curr = self.x_coordinate + self.y_coordinate * grid_width
         if position is 'bottom':
