@@ -3,6 +3,7 @@ function Maze(cell_width, grid_width, grid_height) {
   this.rows = floor(grid_width/cell_width);
   this.cell_width = cell_width;
   this.Cells = [];
+  this.visited_cells = [];
 
   this.Initialize();
 }

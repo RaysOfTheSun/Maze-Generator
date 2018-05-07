@@ -59,17 +59,27 @@ Cell.prototype.GetNeighborIndex = function (x_coordinate, y_coordinate, grid_row
         || (y_coordinate > grid_row_count - 1)){
           return - 1;
         }
-  else {
-    return x_coordinate + y_coordinate * grid_row_count - 1;
-  }
+
+    // console.log(`${x_coordinate}, ${y_coordinate}, ${grid_row_count}`);
+    // console.log(`The index would be: ${x_coordinate + y_coordinate * floor(grid_row_count / this.width)}`);
+    return x_coordinate + y_coordinate * grid_row_count;
 };
 
-/**
- * Gets the neighbors of a given cell.
- * @return {[type]} [description]
- */
-Cell.prototype.GetNeighbors = function () {
-  let neighbors = [
+Cell.prototype.GetNeighbor = function (grid, grid_width = 10) {
+  let neighbor_indexes = [
+    this.GetNeighborIndex(this.x_coordinate, this.y_coordinate + 1, grid_width),
+    this.GetNeighborIndex(this.x_coordinate, this.y_coordinate - 1, grid_width),
+    this.GetNeighborIndex(this.x_coordinate + 1, this.y_coordinate, grid_width),
+    this.GetNeighborIndex(this.x_coordinate - 1, this.y_coordinate, grid_width)
+  ];
 
-  ]
+  let neighbors = [];
+
+  for (index of neighbor_indexes) {
+    if ((index != -1) && (!grid[index].visited)){
+      neighbors.push(grid[index]);
+    }
+  }
+
+  return random(neighbors);
 };
