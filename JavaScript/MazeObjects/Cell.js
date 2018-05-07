@@ -10,7 +10,7 @@ function Cell (x_coordinate, y_coordinate, width) {
   this.y_coordinate = y_coordinate;
   this.width = width;
   this.visited = false;
-  this.Walls = [];
+  this.Walls = {};
   this.BuildWalls();
 }
 
@@ -26,17 +26,14 @@ Cell.prototype.BuildWalls = function () {
   let left = new CellWall([x, y],
     [x, y + this.width]);
 
-  this.Walls.push(top);
-  this.Walls.push(bottom);
-  this.Walls.push(right);
-  this.Walls.push(left);
+  this.Walls = {"top": top, "bottom": bottom, "right": right, "left": left};
 };
 
 Cell.prototype.Draw = function () {
   stroke(255);
-  for(let i = 0; i < this.Walls.length; i++){
-    if (this.Walls[i].show){
-      this.Walls[i].Draw();
+  for (var wall in this.Walls) {
+    if (this.Walls[wall].show) {
+      this.Walls[wall].Draw();
     }
   }
 
@@ -88,4 +85,10 @@ Cell.prototype.Highlight = function (red, green, blue) {
   fill(red, green, blue, 128);
   rect(this.x_coordinate * this.width, this.y_coordinate * this.width,
     this.width, this.width);
+};
+
+Cell.prototype.RemoveWalls = function (neighbor) {
+  if ((neighbor.x_coordinate - this.x_coordinate) == 1){
+    this.Walls['top']
+  }
 };
