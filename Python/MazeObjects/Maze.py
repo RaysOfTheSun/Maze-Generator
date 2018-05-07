@@ -11,7 +11,7 @@ class Maze:
         Initializes an instance of the Maze class
         """
         surface_height, surface_width = 600, 600   # The dimensions of our py game window (height, width)
-        self.cell_width = 20  # The width and height of our square shaped cell
+        self.cell_width = 30  # The width and height of our square shaped cell
         self.rows, self.columns = surface_height // self.cell_width, surface_width // self.cell_width
         self.grid = []
         self.grid_visited = []  # This one will act as our stack for cells that have been previously visited.
@@ -37,7 +37,7 @@ class Maze:
         random_cell = random.choice(self.grid)  # Start building from a random cell lol. Is that a good idea?
         self.grid[self.grid.index(random_cell)].visited = True  # set that cell's properties first
         self.current = self.grid[self.grid.index(random_cell)]  # assign it as the current cell
-        self.pathfinder = Pathfinder(self.grid, (9, 9))
+        self.pathfinder = Pathfinder(self.grid, (self.columns, self.rows))
         # self.grid[1 + 0].highlight(self.surface, self.__palette.white, 255)
 
     def remove_walls(self, current, neighbor):
@@ -86,7 +86,7 @@ class Maze:
 
             pygame.display.flip()  # update the canvas so the grid will be shown after it is drawn
 
-            clock.tick(60)  # Slows down the frame rate. I need to see if what it's doing is right
+            clock.tick(120)  # Slows down the frame rate. I need to see if what it's doing is right
             # I also think the animation is fancy lol
 
             if not self.path_finding:
@@ -103,12 +103,12 @@ class Maze:
             elif self.grid_visited:  # backtrack
                 self.current = self.grid_visited.pop()
             else:
-                clock.tick(30)  # Slows down the frame rate so the path finder can be properly seen as it searches
-                if self.grid.index(self.current) != 99:
+                clock.tick(20)  # Slows down the frame rate so the path finder can be properly seen as it searches
+                if self.grid.index(self.current) != len(self.grid) - 1:
                     self.path_finding = True
                     # All the tiles in the grid has been visited and the maze has been carved out.
                     # This is where the pathfinder will come in
                     pathfinder = self.grid[self.pathfinder.x_coordinate + self.pathfinder.y_coordinate * self.columns]
                     self.current = pathfinder
-                    self.pathfinder.path_find()
+                    self.pathfinder.path_find(self.columns)
 

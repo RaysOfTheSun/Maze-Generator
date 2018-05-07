@@ -40,7 +40,7 @@ class Pathfinder:
 
         return False
 
-    def path_find(self):
+    def path_find(self, grid_width=10):
         """
         Makes the path finder find the best path to the target
         :return: None
@@ -52,9 +52,9 @@ class Pathfinder:
 
         for neighbor in neighbors:
             coordinates = neighbors[neighbor]
-            neighbor_idx = coordinates[0] + coordinates[1] * 10
-            if coordinates[0] < 0 or coordinates[1] < 0 or neighbor_idx > 99\
-                    or coordinates[0] > 9 or coordinates[1] > 9\
+            neighbor_idx = coordinates[0] + coordinates[1] * grid_width
+            if coordinates[0] < 0 or coordinates[1] < 0 \
+                    or coordinates[0] > grid_width - 1 or coordinates[1] > grid_width - 1\
                     or self.is_passable(neighbor, neighbor_idx) \
                     or self.grid[neighbor_idx] in self.closed_list:
                 continue
