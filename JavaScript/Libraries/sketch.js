@@ -1,10 +1,12 @@
 var maze = undefined;
 var current = undefined;
+var pathfinder = undefined;
 
 function setup(){
   createCanvas(800, 800);
-  maze = new Maze(20, width, height);
+  maze = new Maze(80, width, height);
   current = maze.Cells[0];
+  pathfinder = new PathFinder(0, 0, maze.Cells);
 }
 
 function draw(){
@@ -25,5 +27,8 @@ function draw(){
     else {
       current = maze.visited_cells.pop();
     }
+  }
+  else { // Means we're done building the maze for the pathfinder to use
+    console.log(pathfinder);
   }
 }
