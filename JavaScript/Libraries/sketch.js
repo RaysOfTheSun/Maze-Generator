@@ -8,17 +8,22 @@ function setup(){
 }
 
 function draw(){
-  frameRate(15);
+  frameRate(240);
   background(51);
   maze.Draw();
-  current.Highlight(255, 255, 0);
-  current.visited = true;
-  let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
-  if (next != undefined) {
-    maze.visited_cells.push(current);
-    current = next;
-  }
-  else {
-    current = maze.visited_cells.pop();
+
+  if (current != undefined){
+    current.Highlight(255, 255, 0);
+    current.visited = true;
+    let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
+
+    if (next != undefined) {
+      current.RemoveWalls(next);
+      maze.visited_cells.push(current);
+      current = next;
+    }
+    else {
+      current = maze.visited_cells.pop();
+    }
   }
 }

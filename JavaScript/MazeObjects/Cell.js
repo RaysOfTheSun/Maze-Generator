@@ -1,8 +1,8 @@
 /**
  * Initializes a new instance of the cell class
- * @param       {int} x_coordinate [The position of the cell relative to the x-axis]
- * @param       {int} y_coordinate [The position of the cell relative to the y-axis]
- * @param       {int} width        [The thickness of the cell]
+ * @param  {int} x_coordinate [The position of the cell relative to the x-axis]
+ * @param  {int} y_coordinate [The position of the cell relative to the y-axis]
+ * @param  {int} width        [The thickness of the cell]
  * @constructor
  */
 function Cell (x_coordinate, y_coordinate, width) {
@@ -30,15 +30,20 @@ Cell.prototype.BuildWalls = function () {
 };
 
 Cell.prototype.Draw = function () {
-  stroke(255);
   for (var wall in this.Walls) {
     if (this.Walls[wall].show) {
+      stroke(255);
       this.Walls[wall].Draw();
+    }
+    else{
+      noStroke();
+      noFill();
     }
   }
 
   if (this.visited){
-    fill(102, 51, 153, 158);
+    noStroke();
+    fill(102, 51, 153, 128);
     rect(this.x_coordinate * this.width,
       this.y_coordinate * this.width , this.width, this.width);
     }
@@ -89,6 +94,19 @@ Cell.prototype.Highlight = function (red, green, blue) {
 
 Cell.prototype.RemoveWalls = function (neighbor) {
   if ((neighbor.x_coordinate - this.x_coordinate) == 1){
-    this.Walls['top']
+    this.Walls["right"].show = false;
+    neighbor.Walls["left"].show = false;
+  }
+  else if ((neighbor.x_coordinate - this.x_coordinate) == -1) {
+    this.Walls["left"].show = false;
+    neighbor.Walls["right"].show = false;
+  }
+  else if ((this.y_coordinate - neighbor.y_coordinate) == 1) {
+    this.Walls["top"].show = false;
+    neighbor.Walls["bottom"].show = false;
+  }
+  else if ((this.y_coordinate - neighbor.y_coordinate) == -1){
+    this.Walls["bottom"].show = false;
+    neighbor.Walls["top"].show = false;
   }
 };
