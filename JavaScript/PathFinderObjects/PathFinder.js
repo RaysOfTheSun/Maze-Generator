@@ -9,15 +9,15 @@
  * @constructor
  */
 function PathFinder(x_coordinate, y_coordinate, grid){
-  this.grid = grid.map((cell => new PathFindingCell(cell.x_coordinate,
-    cell.y_coordinate)));
+  this.grid = grid.map(cell => new PathFindingCell(cell.x_coordinate, cell.y_coordinate));
+  this.maze = grid;
   this.x_coordinate = x_coordinate;
   this.y_coordinate = y_coordinate;
-  // The x or y coordinates of the last cell in the grid is the same as
-  // the total number of rows and columns in the grid. So, we can pass that
-  // number to the method.
-  this.cell = this.grid[this.GetNeighborIndex(x_coordinate, y_coordinate,
-                                this.grid[this.grid.length].x_coordinate)]
+  this.cell = this.grid[0];
+  this.target = this.grid[this.grid.length - 1];
+  this.cell.ComputeScore(-1, this.target);
+  this.open_list = [];
+  this.closed_list = [];
 }
 
 /**
@@ -36,6 +36,76 @@ PathFinder.prototype.GetNeighborIndex = function (x_coordinate, y_coordinate, gr
     return x_coordinate + y_coordinate * grid_row_count;
 };
 
-PathFinder.prototype.GetNeighbor = function () {
+PathFinder.prototype.IsPassable = function (postion, self, target) {
+  // console.log(`target = ${target}`);
+  if (postion == "top") {
+    if (self.Walls[postion].show && target.Walls["bottom"].show) {
+      return true;
+    }
+  }
+  else if (postion == "bottom") {
+    if (self.Walls[postion].show && target.Walls["top"].show) {
+      return true;
+    }
+  }
+  else if (postion == "left") {
+    if (self.Walls[postion].show && target.Walls["right"].show) {
+      return true;
+    }
+  }
+  else {
+    if (self.Walls[postion].show && target.Walls["left"].show) {
+      return true;
+    }
+  }
+};
 
+PathFinder.prototype.PathFind = function (grid_width = 10) {
+  let neighbor_indexes = {
+    "top": this.GetNeighborIndex(this.x_coordinate,
+      this.y_coordinate + 1, grid_width),
+    "bottom": this.GetNeighborIndex(this.x_coordinate,
+      this.y_coordinate - 1, grid_width),
+    "left": this.GetNeighborIndex(this.x_coordinate + 1,
+      this.y_coordinate, grid_width),
+    "right": this.GetNeighborIndex(this.x_coordinate - 1,
+      this.y_coordinate, grid_width)
+  };
+
+  let tile_index = this.grid.indexOf(this.cell);
+  // console.log(`I am the cell ${this.maze[tile_index]}`);
+  for(var neighbor_index in neighbor_indexes){
+      let index = neighbor_indexes[neighbor_index];
+      if (index != -1 && this.IsPassable(neighbor_index, this.maze[tile_index],
+              this.maze[index]) && (!this.closed_list.includes(this.grid[index]))) {
+                // console.log(`I am passable: ${index}`);
+                this.grid[index].ComputeScore(this.cell.G_score, this.target);
+                this.open_list.push(this.grid[index]);
+      }
+    }
+
+  // console.log(`I am the cell ${this.cell}`);
+  console.log(this.open_list);
+
+  let chosen = undefined;
+  if (this.open_list.length > 0) {
+    this.open_list.sort((a, b) => a.F_score - b.F_score);
+    console.log(`sorted: ${this.open_list}`);
+    chosen = this.open_list[0];
+    this.closed_list.push(chosen);
+  }
+
+  if (chosen != undefined) {
+    console.log(this.open_list);
+    let parent = this.cell;
+    chosen.Parent = parent;
+    this.cell = chosen;
+
+    this.x_coordinate = this.cell.x_coordinate;
+    this.y_coordinate = this.cell.y_coordinate;
+
+
+    this.closed_list.push(chosen);
+    this.open_list = [];
+  }
 };

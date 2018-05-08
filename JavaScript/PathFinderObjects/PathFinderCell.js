@@ -7,11 +7,15 @@
  * @constructor
  */
 function PathFindingCell(x_coordinate, y_coordinate){
-  this.x_coordinate, this.y_coordinate = x_coordinate, y_coordinate;
-  this.G_score, this.F_score, this.H_score = 0, 0, 0;
+  this.x_coordinate = x_coordinate;
+  this.y_coordinate = y_coordinate;
+  this.G_score = 0;
+  this.F_score = 0;
+  this.H_score = 0;
+  this.Parent = undefined;
 }
 
-PathFinderCell.prototype.ComputeScore = function (parent_g_score, target) {
+PathFindingCell.prototype.ComputeScore = function (parent_g_score, target) {
   this.G_score = parent_g_score + 1;
   this.H_score = abs((target.x_coordinate - this.x_coordinate)) +
             abs((target.y_coordinate - this.y_coordinate));

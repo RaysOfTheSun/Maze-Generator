@@ -1,6 +1,7 @@
 var maze = undefined;
 var current = undefined;
 var pathfinder = undefined;
+var isPathFinding = false;
 
 function setup(){
   createCanvas(800, 800);
@@ -29,6 +30,13 @@ function draw(){
     }
   }
   else { // Means we're done building the maze for the pathfinder to use
-    console.log(pathfinder);
+  frameRate(15);
+    if (maze.Cells.indexOf(current) != maze.Cells.length - 1) {
+      isPathFinding = true;
+      let ptfndr = maze.Cells[pathfinder.x_coordinate + pathfinder.y_coordinate * maze.columns];
+      current = ptfndr;
+      current.Highlight(255, 255, 255);
+      pathfinder.PathFind(maze.columns);
+    }
   }
 }
