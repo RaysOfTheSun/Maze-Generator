@@ -15,27 +15,23 @@ function draw(){
   background(51);
   maze.Draw();
 
-  if (current != undefined){
-    current.Highlight(255, 255, 0);
-    current.visited = true;
-    let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
+  current.Highlight(255, 255, 0);
+  current.visited = true;
+  let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
 
-    if (next != undefined) {
-      current.RemoveWalls(next);
-      maze.visited_cells.push(current);
-      current = next;
-    }
-    else {
-      current = maze.visited_cells.pop();
-    }
+  if (next != undefined) {
+    current.RemoveWalls(next);
+    maze.visited_cells.push(current);
+    current = next;
+  }
+  else if (maze.visited_cells.length != 0){
+    current = maze.visited_cells.pop();
   }
   else { // Means we're done building the maze for the pathfinder to use
   frameRate(15);
-    if (maze.Cells.indexOf(current) != maze.Cells.length - 1) {
-      isPathFinding = true;
-      let ptfndr = maze.Cells[pathfinder.x_coordinate + pathfinder.y_coordinate * maze.columns];
-      current = ptfndr;
-      current.Highlight(255, 255, 255);
+    current = maze.Cells[pathfinder.x_coordinate + pathfinder.y_coordinate * maze.columns];
+    if (current != maze.Cells[maze.Cells.length - 1]){
+      console.log('yay');
       pathfinder.PathFind(maze.columns);
     }
   }
