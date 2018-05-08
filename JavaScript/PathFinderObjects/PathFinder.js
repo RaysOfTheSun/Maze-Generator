@@ -58,6 +58,8 @@ PathFinder.prototype.IsPassable = function (postion, self, target) {
       return true;
     }
   }
+
+  return false;
 };
 
 PathFinder.prototype.PathFind = function (grid_width = 10) {
@@ -76,16 +78,15 @@ PathFinder.prototype.PathFind = function (grid_width = 10) {
   // console.log(`I am the cell ${this.maze[tile_index]}`);
   for(var neighbor_index in neighbor_indexes){
       let index = neighbor_indexes[neighbor_index];
-      if (index != -1 && this.IsPassable(neighbor_index, this.maze[tile_index],
-              this.maze[index]) && (!this.closed_list.includes(this.grid[index]))) {
+      if (index != -1) {
                 // console.log(`I am passable: ${index}`);
-                this.grid[index].ComputeScore(this.cell.G_score, this.target);
-                this.open_list.push(this.grid[index]);
+          this.grid[index].ComputeScore(this.cell.G_score, this.target);
+          this.open_list.push(this.grid[index]);
       }
     }
 
   // console.log(`I am the cell ${this.cell}`);
-  console.log(this.open_list);
+    console.log(this.open_list);
 
   let chosen = undefined;
   if (this.open_list.length > 0) {
@@ -93,19 +94,15 @@ PathFinder.prototype.PathFind = function (grid_width = 10) {
     console.log(`sorted: ${this.open_list}`);
     chosen = this.open_list[0];
     this.closed_list.push(chosen);
+    this.open_list = [];
   }
 
   if (chosen != undefined) {
-    console.log(this.open_list);
     let parent = this.cell;
     chosen.Parent = parent;
     this.cell = chosen;
 
     this.x_coordinate = this.cell.x_coordinate;
     this.y_coordinate = this.cell.y_coordinate;
-
-
-    this.closed_list.push(chosen);
-    this.open_list = [];
   }
 };
