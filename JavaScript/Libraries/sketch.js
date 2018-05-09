@@ -5,7 +5,7 @@ var isPathFinding = false;
 
 function setup(){
   createCanvas(800, 800);
-  maze = new Maze(80, width, height);
+  maze = new Maze(20, width, height);
   current = maze.Cells[0];
   pathfinder = new PathFinder(0, 0, maze.Cells);
 }

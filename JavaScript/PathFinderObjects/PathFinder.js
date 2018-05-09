@@ -50,7 +50,7 @@ PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_wid
     }
   }
 
-  // return false;
+  return false;
 };
 
 
@@ -114,12 +114,16 @@ PathFinder.prototype.PathFind = function (grid_width) {
   if (chosen != undefined) {
     this.x_coordinate = chosen.x_coordinate;
     this.y_coordinate = chosen.y_coordinate;
+    chosen.Parent = this.curr_cell;
     this.curr_cell = chosen;
     this.closed_list.push(chosen);
     this.open_list = [];
   }
   else {
-
+    chosen = this.curr_cell.Parent;
+    this.curr_cell = chosen;
+    this.x_coordinate = chosen.x_coordinate;
+    this.y_coordinate = chosen.y_coordinate;
   }
 
 
