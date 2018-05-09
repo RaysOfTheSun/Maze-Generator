@@ -5,7 +5,7 @@ var isPathFinding = false;
 
 function setup(){
   createCanvas(800, 800);
-  maze = new Maze(20, width, height);
+  maze = new Maze(40, width, height);
   current = maze.Cells[0];
   pathfinder = new PathFinder(0, 0, maze.Cells);
 }
@@ -14,8 +14,14 @@ function draw(){
   frameRate(240);
   background(51);
   maze.Draw();
+  
+  if (isPathFinding) {
+    current.Highlight(255, 255, 255);
+  }
+  else {
+    current.Highlight(255, 255, 0);
+  }
 
-  current.Highlight(255, 255, 0);
   current.visited = true;
   let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
 
@@ -29,9 +35,9 @@ function draw(){
   }
   else { // Means we're done building the maze for the pathfinder to use
   frameRate(15);
+    isPathFinding = true;
     current = maze.Cells[pathfinder.x_coordinate + pathfinder.y_coordinate * maze.columns];
     if (current != maze.Cells[maze.Cells.length - 1]){
-      // console.log('yay');
       pathfinder.PathFind(maze.rows);
     }
   }

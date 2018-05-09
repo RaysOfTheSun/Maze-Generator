@@ -28,7 +28,6 @@ PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_wid
   let neighbor = this.maze[x_coordinate + y_coordinate * grid_width].Walls;
   let n = this.maze[x_coordinate + y_coordinate * grid_width];
   // n.Highlight(255, 255, 255);
-  // console.log(neighbor);
   if ((x_coordinate - this.x_coordinate) == 1) {
     if (!cur["right"].show && !neighbor["left"].show){
       return true;
@@ -62,9 +61,6 @@ PathFinder.prototype.PathFind = function (grid_width) {
     this.GetIndex(this.x_coordinate - 1, this.y_coordinate, grid_width)
   ];
 
-
-
-
   indexes = indexes.filter(index => index != -1 && index != 0);
 
   for (let i = 0; i < indexes.length; i++) {
@@ -75,7 +71,6 @@ PathFinder.prototype.PathFind = function (grid_width) {
   }
 
   this.open_list = this.open_list.filter(index => index != -1);
-  // console.log(this.open_list);
 
   let neighbors = [];
 
@@ -87,10 +82,6 @@ PathFinder.prototype.PathFind = function (grid_width) {
           neighbors.push(n);
     }
   }
-
-  // neighbors = neighbors.sort((a, b) => a.F_score - b.F_score);
-
-  // console.log(neighbors);
 
   let chosen = undefined;
 
