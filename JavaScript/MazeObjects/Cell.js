@@ -67,7 +67,7 @@ Cell.prototype.GetNeighborIndex = function (x_coordinate, y_coordinate, grid_row
         || (y_coordinate > grid_row_count - 1)){
           return - 1;
         }
-        
+
     return x_coordinate + y_coordinate * grid_row_count;
 };
 
@@ -102,15 +102,15 @@ Cell.prototype.GetNeighbor = function (grid, grid_width = 10) {
  * @param  {Number} green Green value
  * @param  {Number} blue  Blue value
  */
-Cell.prototype.Highlight = function (red, green, blue) {
-  fill(red, green, blue, 128);
+Cell.prototype.Highlight = function (red, green, blue, alpha = 128) {
+  fill(red, green, blue, alpha);
   rect(this.x_coordinate * this.width, this.y_coordinate * this.width,
     this.width, this.width);
 };
 
 /**
  * Removes the wall between the current cell and its neighbor
- * @param  {[type]} neighbor The neighboring cell object
+ * @param  {Cell} neighbor The neighboring cell object
  */
 Cell.prototype.RemoveWalls = function (neighbor) {
   if ((neighbor.x_coordinate - this.x_coordinate) == 1){

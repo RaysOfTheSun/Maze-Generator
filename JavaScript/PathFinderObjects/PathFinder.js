@@ -12,7 +12,14 @@ function PathFinder(x_coordinate, y_coordinate, grid){
   this.curr_cell.ComputeScore(-1, this.goal);
 }
 
-
+/**
+ * Obtains the index of the cell in the grid array based on its coordinates
+ * @param  {int} x_coordinate The position of the cell relative to the x-axis
+ * @param  {int} y_coordinate The position of the cell relative to the y-axis
+ * @param  {int} grid_width   The number of columns present in the gird
+ * @return {int}              The index of the cell in the grid array or -1
+ *                            if the given coordinates are invalid
+ */
 PathFinder.prototype.GetIndex = function (x_coordinate, y_coordinate, grid_width) {
   if (x_coordinate < 0 || y_coordinate < 0 || x_coordinate > grid_width - 1
     || y_coordinate > grid_width - 1) {
@@ -23,11 +30,23 @@ PathFinder.prototype.GetIndex = function (x_coordinate, y_coordinate, grid_width
   }
 };
 
+/**
+ * Determine whether there is a wall between the current cell and the
+ * specified neighbor
+ * @param  {int} x_coordinate The position of the neighboring cell relative
+ *                            to the x-axis
+ * @param  {int} y_coordinate The position of the neighboring cell relative
+ *                            to the y-axis
+ * @param  {int} grid_width   The number of columns present in the gird
+ * @return {boolean}          True if there is no wall between the two cells
+ */
 PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_width) {
-  let cur = this.maze[this.x_coordinate + this.y_coordinate * grid_width].Walls;
-  let neighbor = this.maze[x_coordinate + y_coordinate * grid_width].Walls;
-  let n = this.maze[x_coordinate + y_coordinate * grid_width];
-  // n.Highlight(255, 255, 255);
+  let cur = this.maze[this.GetIndex(this.x_coordinate, this.y_coordinate,
+    grid_width)].Walls;
+  let neighbor = this.maze[this.GetIndex(x_coordinate, y_coordinate,
+    grid_width)].Walls;
+  this.maze[this.GetIndex(x_coordinate, y_coordinate,
+    grid_width)].Highlight(0, 128, 0, 70);
   if ((x_coordinate - this.x_coordinate) == 1) {
     if (!cur["right"].show && !neighbor["left"].show){
       return true;
@@ -52,7 +71,10 @@ PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_wid
   return false;
 };
 
-
+/**
+ * Find the most optimal path to the last cell in the maze
+ * @param  {int} grid_width The number of columns present in the maze
+ */
 PathFinder.prototype.PathFind = function (grid_width) {
   let indexes = [
     this.GetIndex(this.x_coordinate, this.y_coordinate + 1, grid_width),
@@ -116,6 +138,4 @@ PathFinder.prototype.PathFind = function (grid_width) {
     this.x_coordinate = chosen.x_coordinate;
     this.y_coordinate = chosen.y_coordinate;
   }
-
-
 };

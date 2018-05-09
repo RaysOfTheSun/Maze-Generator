@@ -14,7 +14,7 @@ function draw(){
   frameRate(240);
   background(51);
   maze.Draw();
-  
+
   if (isPathFinding) {
     current.Highlight(255, 255, 255);
   }
