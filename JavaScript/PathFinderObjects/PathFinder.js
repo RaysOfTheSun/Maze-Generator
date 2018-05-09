@@ -26,18 +26,20 @@ PathFinder.prototype.GetIndex = function (x_coordinate, y_coordinate, grid_width
 PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_width) {
   let cur = this.maze[this.x_coordinate + this.y_coordinate * grid_width].Walls;
   let neighbor = this.maze[x_coordinate + y_coordinate * grid_width].Walls;
-
-  if (x_coordinate == this.x_coordinate + 1) {
+  let n = this.maze[x_coordinate + y_coordinate * grid_width];
+  // n.Highlight(255, 255, 255);
+  // console.log(neighbor);
+  if ((x_coordinate - this.x_coordinate) == 1) {
     if (!cur["right"].show && !neighbor["left"].show){
       return true;
     }
   }
-  else if (x_coordinate == this.x_coordinate - 1){
+  else if ((x_coordinate - this.x_coordinate) == -1){
     if (!cur["left"].show && !neighbor["right"].show){
       return true;
     }
   }
-  else if (y_coordinate == this.y_coordinate + 1) {
+  else if ((this.y_coordinate - y_coordinate) == 1) {
     if (!cur["top"].show && !neighbor["bottom"].show){
       return true;
     }
@@ -48,7 +50,7 @@ PathFinder.prototype.IsPassable = function (x_coordinate, y_coordinate, grid_wid
     }
   }
 
-  return false;
+  // return false;
 };
 
 
@@ -63,7 +65,7 @@ PathFinder.prototype.PathFind = function (grid_width) {
 
 
 
-  indexes = indexes.filter(index => index != -1);
+  indexes = indexes.filter(index => index != -1 && index != 0);
 
   for (let i = 0; i < indexes.length; i++) {
     if (!this.closed_list.includes(this.grid[indexes[i]])
@@ -73,30 +75,42 @@ PathFinder.prototype.PathFind = function (grid_width) {
   }
 
   this.open_list = this.open_list.filter(index => index != -1);
-  //
-  // for (var i = 0; i < this.open_list.length; i++) {
-  //   let curr = this.grid[this.open_list[i]];
-  //   if (this.IsPassable(curr.x_coordinate, curr.y_coordinate, grid_width)) {
-  //     curr.ComputeScore(this.curr_cell.G_score, this.goal);
-  //     neighbors.push(curr);
-  //   }
-  // }
+  // console.log(this.open_list);
 
-  // console.log(neighbors);
-  let chosen = undefined;
+  let neighbors = [];
 
-  if (this.open_list.length > 0) {
-    for (var i = 0; i < this.open_list.length; i++) {
-      let nei = this.maze[this.open_list[i]];
-      this.grid[this.open_list[i]].ComputeScore(this.curr_cell.G_score, this.goal);
-      if (this.grid[this.open_list[i]].F_score <= this.curr_cell.F_score
-        && this.IsPassable(nei.x_coordinate, nei.y_coordinate, grid_width)) {
-        chosen = this.grid[this.open_list[i]];
-      }
+  for (let i = 0; i < this.open_list.length; i++) {
+    let n = this.grid[this.open_list[i]];
+    if (!neighbors.includes(this.grid[this.open_list[i]])
+        && this.IsPassable(n.x_coordinate, n.y_coordinate, grid_width)) {
+          n.ComputeScore(this.curr_cell.G_score, this.goal);
+          neighbors.push(n);
     }
   }
 
-  console.log(chosen);
+  // neighbors = neighbors.sort((a, b) => a.F_score - b.F_score);
+
+  // console.log(neighbors);
+
+  let chosen = undefined;
+
+  if (neighbors.length > 0) {
+    chosen = neighbors[0];
+  }
+
+  // if (this.open_list.length > 0) {
+  //   for (var i = 0; i < this.open_list.length; i++) {
+  //     let nei = this.maze[this.open_list[i]];
+  //     this.grid[this.open_list[i]].ComputeScore(this.curr_cell.G_score, this.goal);
+  //     if (this.grid[this.open_list[i]].F_score <= this.curr_cell.F_score
+  //       && this.IsPassable(nei.x_coordinate, nei.y_coordinate, grid_width)) {
+  //         // console.log(nei);
+  //         chosen = this.grid[this.open_list[i]];
+  //     }
+  //   }
+  // }
+
+  // console.log(chosen);
   if (chosen != undefined) {
     this.x_coordinate = chosen.x_coordinate;
     this.y_coordinate = chosen.y_coordinate;
@@ -105,7 +119,7 @@ PathFinder.prototype.PathFind = function (grid_width) {
     this.open_list = [];
   }
   else {
-    // console.log('ooooo');
+
   }
 
 

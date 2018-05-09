@@ -20,7 +20,7 @@ function draw(){
   let next = current.GetNeighbor(maze.Cells, floor(width / maze.cell_width));
 
   if (next != undefined) {
-    current.RemoveWalls(next);
+    maze.Cells[maze.Cells.indexOf(current)].RemoveWalls(next);
     maze.visited_cells.push(current);
     current = next;
   }
@@ -31,8 +31,8 @@ function draw(){
   frameRate(15);
     current = maze.Cells[pathfinder.x_coordinate + pathfinder.y_coordinate * maze.columns];
     if (current != maze.Cells[maze.Cells.length - 1]){
-      console.log('yay');
-      pathfinder.PathFind(maze.columns);
+      // console.log('yay');
+      pathfinder.PathFind(maze.rows);
     }
   }
 }
